@@ -46,5 +46,4 @@ Democratizar a visualização de imagens 360° dentro do ambiente SEI, transform
 ## 📜 Licença
 Este projeto é distribuído sob a **Licença MIT**.
 
----
-*Tocantins — Co Yvy Ore Retama — Esta Terra É Nossa*
+
