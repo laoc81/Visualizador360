@@ -8,7 +8,8 @@
 
 * **Autor e Idealizador Original:** Gilberto Milhomem Marinho Filho.
 * **Modificações, Shader do Nadir e Evolução de Interface (2026):** Kuriakin Toscan.
-* **Versão Atual:** 1.1 (Outubro/2026)
+* **Customizações pelo usuário, Título, exibição de dados do vôo** Luiz Augusto.
+* **Versão Atual:** 1.2 (Novembro/2026)
 
 
 ---
@@ -20,6 +21,10 @@ Democratizar e viabilizar a visualização de fotos panorâmicas esféricas de 3
 Imagens 360° captadas por drones (como DJI Mini, Air, Mavic, Matrice) normalmente exigem softwares especializados ou conexões externas. O **Visualizador 360°** converte essas capturas em arquivos `.html` independentes e autocontidos (com imagem, estilos, scripts e logotipo embutidos), transformando registros aéreos imersivos em **evidências documentais e probatórias natas-digitais** acessíveis a qualquer servidor ou cidadão com acesso ao processo.
 
 ---
+## ✨ Novidades da Versão 1.2
+
+A versão 1.2 possibilita customização opcional pelo usuário: Título da missão/projeto, exibição de latitude, longitude, altitude e modelo do Drone.  
+
 
 ## ✨ Novidades da Versão 1.1
 
