@@ -7,6 +7,7 @@
     
     <!-- Bibliotecas Externas -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
     
     <style>
         /* 
@@ -266,6 +267,44 @@
          * 7. COMPONENTES: FORMULÁRIO E PROGRESSO
          */
         .field-label { font-size: 12px; font-weight: 600; color: var(--blue3); }
+        .metadata-options {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px 14px;
+            padding: 11px 13px;
+            background: #f7fafc;
+            border: 1px solid var(--border2);
+            border-radius: 12px;
+        }
+        .metadata-options label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #29465a;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .metadata-options input { accent-color: #1a6b8a; width: 15px; height: 15px; }
+
+
+       .meta-input{
+    width:100%;
+    background:transparent;
+    border:none;
+    border-bottom:1px solid transparent;
+    outline:none;
+
+    color:#2c3e50;
+    font-size:15px;
+    font-weight:500;
+    padding:4px 0;
+    transition:.2s;
+}
+
+.meta-input:focus{
+    border-bottom:1px solid #4f88ff;
+}
+
 
         .name-wrap {
             display: flex;
@@ -440,6 +479,33 @@
                                 <div class="meta-label">Proporção</div>
                                 <div class="meta-value" id="metaRatio">-</div>
                             </div>
+                            <div class="meta-item">
+                                <div class="meta-label">Modelo do Drone</div>
+                                <div class="meta-value" id="metaModel">-</div>
+                            </div>
+                            <div class="meta-item">
+                                <div class="meta-label">Data/Hora</div>
+                                <div class="meta-value" id="metaDateTime">-</div>
+                            </div>
+                            <div class="meta-item" style="grid-column:span 2;">
+                                <div class="meta-label">Coordenadas GPS</div>
+                                <div class="meta-value" id="metaGPS">-</div>
+                            </div>
+                            <div class="meta-item" style="grid-column:span 2;">
+                                <div class="meta-label">Altitude GPS</div>
+                                <div class="meta-value" id="metaAltitude">-</div>
+                            </div>
+
+                            <div class="meta-item" style="grid-column:span 2;">
+    <div class="meta-label">Descrição personalizada do local/voo</div>
+    <input
+        type="text"
+        id="desc-input"
+        class="meta-input"
+        placeholder="Digite uma descrição personalizada">
+</div>
+
+
                         </div>
 
                         <!-- Configurações de Saída -->
@@ -448,6 +514,26 @@
                             <div class="name-pre"><i class="ph-fill ph-folder-open"></i></div>
                             <input type="text" id="output-name" placeholder="nome_do_local" autocomplete="off">
                             <div class="name-suf">.html</div>
+                        </div>
+                        
+                        
+                        
+
+
+
+           
+    
+    
+                                
+
+
+
+                        <div class="field-label" style="margin-top:12px;">Informações que serão exibidas no visualizador (marque as desejadas)</div>
+                        <div class="metadata-options" id="metadata-options">
+                            <label><input type="checkbox" id="include-model" checked> Modelo do drone</label>
+                            <label><input type="checkbox" id="include-datetime" checked> Data e hora</label>
+                            <label><input type="checkbox" id="include-gps" checked> Latitude e longitude</label>
+                            <label><input type="checkbox" id="include-altitude" checked> Altitude GPS</label>
                         </div>
 
                         <!-- Progresso -->
@@ -491,7 +577,7 @@
     <!-- Rodapé de Créditos -->
     <div id="credito">
         <span>MIT License · Criado por Gilberto Milhomem Marinho Filho</span>
-        <span>Modificado por Kuriakin Toscan · Versão 1.1 (2026)</span>
+        <span>Modificado por Kuriakin Toscan e Luiz Costa · Versão 1.2 (2026)</span>
     </div>
 
     <!-- Lógica da Aplicação -->
@@ -519,10 +605,13 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
         *{margin:0;padding:0;box-sizing:border-box;}
         body{background:#f4f5f7;color:#1e293b;font-family:'Inter', sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden;}
-        .topbar{background:#ffffff;height:150px;padding:0 24px;display:flex;align-items:center;justify-content:center;position:relative;border-bottom:2px solid #cbd5e1;flex-shrink:0;box-shadow:0 2px 10px rgba(0,0,0,0.05);}
+        .topbar{background:#ffffff;min-height:150px;height:auto;padding:16px 24px;display:flex;align-items:center;justify-content:center;position:relative;border-bottom:2px solid #cbd5e1;flex-shrink:0;box-shadow:0 2px 10px rgba(0,0,0,0.05);}
         .text-area{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;max-width:calc(100% - 320px);z-index:2;}
         .logo-icon{position:absolute;left:28px;top:50%;transform:translateY(-50%);height:100px;width:auto;object-fit:contain;z-index:3;}
         .logo-text-unified{font-weight:700;font-size:16px;color:#334155;letter-spacing:1px;line-height:1.2;text-align:center;}
+        .viewer-description{font-size:17px;font-weight:700;color:#1e5f7d;margin-top:8px;text-align:center;}
+        .sub-info{font-size:12px;color:#475569;display:flex;flex-wrap:wrap;justify-content:center;gap:6px 12px;margin-top:5px;}
+        .sub-info span{background:#f1f5f9;padding:3px 9px;border-radius:20px;}
         #viewer{flex:1;position:relative;background:#e2e8f0;}
         canvas{display:block;width:100%!important;height:100%!important;cursor:grab;}
         .overlay{position:absolute;inset:0;background:rgba(248,250,252,0.85);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:10;backdrop-filter:blur(12px);transition:opacity 0.4s;}
@@ -532,8 +621,32 @@
         .toolbar{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:6px;background:rgba(255,255,255,0.85);backdrop-filter:blur(12px);border-radius:60px;padding:6px 12px;border:1px solid #cbd5e1;z-index:10;}
         .tool-btn{background:transparent;border:none;color:#475569;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:18px;}
         #fovValue{font-size:12px;min-width:45px;text-align:center;color:#334155;line-height:36px;font-weight:600;}
-        .compass{position:absolute;top:16px;right:16px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.85);backdrop-filter:blur(4px);border:1px solid #cbd5e1;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;}
-        .compass .needle{width:2px;height:16px;background:linear-gradient(to bottom,#ef4444 50%,#94a3b8 50%);border-radius:2px;}
+        .compass{
+position:absolute;
+top:16px;
+right:16px;
+width:40px;
+height:40px;
+border-radius:50%;
+ 
+background:transparent;
+border:none;
+backdrop-filter:none;
+ 
+opacity:0;
+ 
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+z-index:10;
+}
+ 
+.compass .needle{
+opacity:0;
+}
+
+
         .loader{position:absolute;bottom:0;left:0;right:0;height:3px;background:#e2e8f0;}
         .loader.active::after{content:'';position:absolute;width:40%;height:100%;background:linear-gradient(90deg,transparent,#64748b,transparent);animation:slide 1s infinite;}
         @keyframes slide{to{left:100%;}}
@@ -545,6 +658,13 @@
         <div class="text-area">
             <span class="logo-text-unified">Instituto Brasileiro do Meio Ambiente e dos Recursos Naturais Renováveis</span>
             <span class="logo-text-unified">IBAMA</span>
+            <div class="viewer-description">__DESCRIPTION__</div>
+            <div class="sub-info">
+                __META_MODEL_ROW__
+                __META_DATETIME_ROW__
+                __META_GPS_ROW__+
+                __META_ALTITUDE_ROW__
+            </div>
         </div>
     </div>
     <div id="viewer">
@@ -554,7 +674,7 @@
             <button class="btn-start" id="startBtn">▶ Abrir visualização 360°</button>
             <small style="opacity:0.6; color:#475569; font-weight:500;">IBAMA</small>
         </div>
-        <div class="compass"><div class="needle"></div><span style="font-size:8px; color:#334155; font-weight:700;">N</span></div>
+        <div class="compass"><div class="needle"></div><span style="font-size:8px; color:#334155; font-weight:700;"></span></div>
         <div class="toolbar">
             <button class="tool-btn" id="zoomIn">+</button><button class="tool-btn" id="zoomOut">−</button>
             <div style="width:1px;background:#cbd5e1;margin:6px;"></div><span id="fovValue">75°</span>
@@ -612,7 +732,7 @@
                 camera.rotation.x=THREE.MathUtils.degToRad(controls.lat);
                 camera.rotation.z=0;
                 renderer.render(scene,camera);
-                document.querySelector('.needle').style.transform='rotate('+(-controls.lon)+'deg)';
+                // document.querySelector('.needle').style.transform='rotate('+(-controls.lon)+'deg)';
             }
             
             function attachEvents(){
@@ -666,11 +786,16 @@
                 name: document.getElementById('metaName'),
                 size: document.getElementById('metaSize'),
                 dims: document.getElementById('metaDims'),
-                ratio: document.getElementById('metaRatio')
+                ratio: document.getElementById('metaRatio'),
+                model: document.getElementById('metaModel'),
+                dateTime: document.getElementById('metaDateTime'),
+                gps: document.getElementById('metaGPS'),
+                altitude: document.getElementById('metaAltitude')
             },
             
             form: {
                 outName: document.getElementById('output-name'),
+                description: document.getElementById('desc-input'),
                 btnGenerate: document.getElementById('btn-generate')
             },
             
@@ -702,9 +827,10 @@
             },
             
             /** Escapa caracteres HTML para evitar XSS */
-            escapeHTML(str) {
-                const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;' };
-                return str.replace(/[&<>]/g, c => map[c]);
+            escapeHTML(value) {
+                const str = String(value == null ? '' : value);
+                const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+                return str.replace(/[&<>"']/g, c => map[c]);
             }
         };
 
@@ -716,7 +842,8 @@
             state: {
                 fileData: null,
                 fileName: null,
-                generatedBlob: null
+                generatedBlob: null,
+                metadata: { model: '-', dateTime: '-', gps: '-', lat: null, lon: null }
             },
 
             /** Inicia o processamento de um arquivo selecionado */
@@ -727,6 +854,11 @@
 
                 const reader = new FileReader();
                 reader.onload = (e) => this.handleLoad(e.target.result, file);
+                reader.onerror = () => {
+                    this.reset();
+                    UI.progress.section.classList.remove('visible');
+                    alert('Não foi possível ler esta imagem. Verifique se o arquivo está íntegro e tente novamente.');
+                };
                 reader.readAsDataURL(file);
                 
                 // Limpa o input para permitir selecionar o mesmo arquivo
@@ -764,16 +896,95 @@
                     UI.form.btnGenerate.disabled = false;
                 };
                 img.src = data;
+
+                // Extrai modelo do drone, data/hora e coordenadas GPS do EXIF.
+                this.extractMetadata(file);
+            },
+
+            extractMetadata(file) {
+                const meta = {
+                    model: '-', dateTime: '-', gps: '-', altitude: '-',
+                    lat: null, lon: null, altitudeMeters: null
+                };
+                const finish = () => {
+                    this.state.metadata = meta;
+                    UI.meta.model.textContent = meta.model;
+                    UI.meta.dateTime.textContent = meta.dateTime;
+                    UI.meta.gps.textContent = meta.gps === '-' ? 'Não disponível' : meta.gps;
+                    UI.meta.gps.className = 'meta-value ' + (meta.gps === '-' ? 'na' : 'ok');
+                    UI.meta.altitude.textContent = meta.altitude === '-' ? 'Não disponível' : meta.altitude;
+                    UI.meta.altitude.className = 'meta-value ' + (meta.altitude === '-' ? 'na' : 'ok');
+                };
+                if (typeof EXIF === 'undefined') { finish(); return; }
+                try {
+                    EXIF.getData(file, function() {
+                        try {
+                            const model = EXIF.getTag(this, 'Model');
+                            if (model) meta.model = String(model);
+                            const dt = EXIF.getTag(this, 'DateTimeOriginal') || EXIF.getTag(this, 'DateTime');
+                            if (dt) {
+                                const parts = String(dt).split(' ');
+                                if (parts.length === 2) {
+                                    const d = parts[0].split(':');
+                                    meta.dateTime = d.length === 3 ? `${d[2]}/${d[1]}/${d[0]} ${parts[1]}` : String(dt);
+                                } else meta.dateTime = String(dt);
+                            }
+                            const lat = EXIF.getTag(this, 'GPSLatitude');
+                            const latRef = EXIF.getTag(this, 'GPSLatitudeRef');
+                            const lon = EXIF.getTag(this, 'GPSLongitude');
+                            const lonRef = EXIF.getTag(this, 'GPSLongitudeRef');
+                            const decimal = c => Number(c[0]) + Number(c[1])/60 + Number(c[2])/3600;
+                            if (lat && lon && latRef && lonRef) {
+                                meta.lat = decimal(lat) * (String(latRef).toUpperCase() === 'S' ? -1 : 1);
+                                meta.lon = decimal(lon) * (String(lonRef).toUpperCase() === 'W' ? -1 : 1);
+                                meta.gps = meta.lat.toFixed(6) + ', ' + meta.lon.toFixed(6);
+                            }
+
+                            // GPSAltitude é armazenada como racional no EXIF.
+                            // GPSAltitudeRef: 0 = acima/no nível do mar; 1 = abaixo do nível do mar.
+                            const gpsAltitude = EXIF.getTag(this, 'GPSAltitude');
+                            const gpsAltitudeRef = EXIF.getTag(this, 'GPSAltitudeRef');
+                            if (gpsAltitude !== undefined && gpsAltitude !== null) {
+                                let altitudeValue = NaN;
+                                if (typeof gpsAltitude === 'number') {
+                                    altitudeValue = gpsAltitude;
+                                } else if (Array.isArray(gpsAltitude) && gpsAltitude.length >= 2) {
+                                    altitudeValue = Number(gpsAltitude[0]) / Number(gpsAltitude[1]);
+                                } else if (typeof gpsAltitude === 'object') {
+                                    if ('numerator' in gpsAltitude && 'denominator' in gpsAltitude) {
+                                        altitudeValue = Number(gpsAltitude.numerator) / Number(gpsAltitude.denominator);
+                                    } else if ('numer' in gpsAltitude && 'denom' in gpsAltitude) {
+                                        altitudeValue = Number(gpsAltitude.numer) / Number(gpsAltitude.denom);
+                                    }
+                                } else {
+                                    altitudeValue = Number(gpsAltitude);
+                                }
+
+                                if (Number.isFinite(altitudeValue)) {
+                                    const belowSeaLevel = Number(gpsAltitudeRef) === 1 ||
+                                        String(gpsAltitudeRef).toLowerCase() === 'below sea level';
+                                    meta.altitudeMeters = belowSeaLevel ? -altitudeValue : altitudeValue;
+                                    meta.altitude = meta.altitudeMeters.toFixed(1) + ' m';
+                                }
+                            }
+                        } catch (err) { console.warn('Falha ao interpretar EXIF:', err); }
+                        finish();
+                    });
+                } catch (err) { console.warn('Falha ao ler EXIF:', err); finish(); }
             },
 
             /** Reseta o estado do processador */
             reset() {
                 this.state.fileData = null;
                 this.state.generatedBlob = null;
+                this.state.metadata = { model: '-', dateTime: '-', gps: '-', lat: null, lon: null };
                 UI.form.btnGenerate.disabled = true;
                 UI.form.btnGenerate.style.display = '';
                 UI.progress.section.classList.remove('visible');
                 UI.result.section.classList.remove('visible');
+                UI.meta.model.textContent = '-';
+                UI.meta.dateTime.textContent = '-';
+                UI.meta.gps.textContent = '-';
             }
         };
 
@@ -795,22 +1006,68 @@
                     this.updateProgress(50, 'Gerando arquivo...');
                     const outputName = UI.form.outName.value.trim() || FileProcessor.state.fileName;
                     
-                    // Injeção de dados no template
-                    // Usamos funções anônimas no replace para evitar problemas de memória com strings gigantes
-                    const html = CONFIG.VIEWER_TPL
-                        .replace(/__TITLE__/g, () => Utils.escapeHTML(outputName))
-                        .replace(/__IMG__/g, () => FileProcessor.state.fileData)
-                        .replace(/__LOGO__/g, () => CONFIG.LOGOS.IBAMA);
+                    // Montagem defensiva: os metadados EXIF são opcionais.
+                    try {
+                        const metadata = FileProcessor.state.metadata || {};
+                        const safe = (value, fallback) =>
+                            Utils.escapeHTML(value == null || value === '' || value === '-' ? fallback : value);
 
-                    FileProcessor.state.generatedBlob = new Blob(['\uFEFF', html], { type: 'text/html;charset=utf-8' });
-                    
-                    this.updateProgress(100, 'Concluído');
+                        if (typeof CONFIG.VIEWER_TPL !== 'string' || !CONFIG.VIEWER_TPL) {
+                            throw new Error('Modelo do visualizador não foi carregado.');
+                        }
+                        if (typeof FileProcessor.state.fileData !== 'string' ||
+                            !FileProcessor.state.fileData.startsWith('data:image/')) {
+                            throw new Error('A imagem não foi lida corretamente. Selecione o arquivo novamente.');
+                        }
 
-                    setTimeout(() => {
-                        UI.progress.section.classList.remove('visible');
-                        UI.result.section.classList.add('visible');
-                        UI.result.info.textContent = `${outputName}.html - ${(FileProcessor.state.generatedBlob.size / 1024).toFixed(0)} KB`;
-                    }, 300);
+                        let html = CONFIG.VIEWER_TPL;
+                        const replacements = {
+                            '__TITLE__': safe(outputName, 'Panorama 360'),
+                            '__IMG__': FileProcessor.state.fileData,
+                            '__LOGO__': String(CONFIG.LOGOS.IBAMA || ''),
+                            '__DESCRIPTION__': safe(
+                                UI.form.description ? UI.form.description.value.trim() : '',
+                                'IBAMA · INSPEÇÃO AMBIENTAL'
+                            ),
+                            '__META_MODEL_ROW__': (
+                                document.getElementById('include-model').checked && metadata.model && metadata.model !== '-'
+                                    ? '<span>UAS: ' + safe(metadata.model, '') + '</span>' : ''
+                            ),
+                            '__META_DATETIME_ROW__': (
+                                document.getElementById('include-datetime').checked && metadata.dateTime && metadata.dateTime !== '-'
+                                    ? '<span>Data/Hora ' + safe(metadata.dateTime, '') + '</span>' : ''
+                            ),
+                            '__META_GPS_ROW__': (
+                                document.getElementById('include-gps').checked && metadata.gps && metadata.gps !== '-'
+                                    ? '<span>Localização: ' + safe(metadata.gps, '') + '</span>' : ''
+                            ),
+                            '__META_ALTITUDE_ROW__': (
+                                document.getElementById('include-altitude').checked && metadata.altitude && metadata.altitude !== '-'
+                                    ? '<span>Altitude: ' + safe(metadata.altitude, '') + '</span>' : ''
+                            )
+                        };
+
+                        for (const [token, value] of Object.entries(replacements)) {
+                            html = html.split(token).join(value);
+                        }
+
+                        FileProcessor.state.generatedBlob = new Blob(
+                            ['\uFEFF', html],
+                            { type: 'text/html;charset=utf-8' }
+                        );
+
+                        this.updateProgress(100, 'Concluído');
+                        setTimeout(() => {
+                            UI.progress.section.classList.remove('visible');
+                            UI.result.section.classList.add('visible');
+                            UI.result.info.textContent =
+                                `${outputName}.html - ${(FileProcessor.state.generatedBlob.size / 1024).toFixed(0)} KB`;
+                        }, 300);
+                    } catch (error) {
+                        console.error('Erro ao gerar HTML:', error);
+                        this.updateProgress(0, 'Falha na geração: ' + (error && error.message ? error.message : 'erro inesperado'));
+                        UI.form.btnGenerate.style.display = '';
+                    }
                 }, 500);
             },
 
